@@ -11,8 +11,8 @@ namespace BusinessLogic.Services.Interfaces.Services
     {
         Task<CommentPL> GetComment(int id);
         Task DeleteComment(int id);
-        Task<int> CreateComment (CommentPL commentPL);
-        Task<int> UpdateComment (CommentPL commentPL);
+        Task<int> CreateComment(CommentPL commentPL);
+        Task<int> UpdateComment(CommentPL commentPL);
         Task<IList<CommentPL>> GetCommentsList(int id);
     }
 }

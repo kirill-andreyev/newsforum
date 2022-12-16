@@ -40,7 +40,6 @@ namespace NewsForum.Controllers
         {
             var article = new ArticlePL { Description = Description, Title = Title };
             
-
             return Ok(await _articleService.CreateArticle(article, file));
         }
 

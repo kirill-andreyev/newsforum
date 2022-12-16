@@ -1,7 +1,8 @@
 ﻿using System.Security.Authentication;
+using AutoMapper;
 using BusinessLogic.Models;
 using BusinessLogic.Services.Interfaces.Services;
-using Mapping;
+using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 using NewsForumApi.Database.Repositories;
 
@@ -10,16 +11,17 @@ namespace BusinessLogic.Services.Implementations.Services
     public class CommentService : ICommentService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public CommentService(ApplicationDbContext context)
+        public CommentService(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<CommentPL> GetComment(int id)
         {
-            return CommentMapper.MapToPL(await _context.Comments.Include(x => x.User)
-                .FirstOrDefaultAsync(x => x.Id == id));
+            return _mapper.Map<CommentPL>(await _context.Comments.FirstOrDefaultAsync(x => x.Id == id));
         }
 
         public async Task DeleteComment(int id)
@@ -35,7 +37,10 @@ namespace BusinessLogic.Services.Implementations.Services
 
         public async Task<int> CreateComment(CommentPL commentPL)
         {
-            var entity = await _context.Comments.AddAsync(CommentMapper.MapToDAL(commentPL));
+            var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == commentPL.UserId);
+            var comment = _mapper.Map<Comment>(commentPL);
+            comment.User = dbUser;
+            var entity = await _context.Comments.AddAsync(comment);
             await _context.SaveChangesAsync();
             return entity.Entity.Id;
         }
@@ -61,7 +66,7 @@ namespace BusinessLogic.Services.Implementations.Services
 
         public async Task<IList<CommentPL>> GetCommentsList(int id)
         {
-            return _context.Comments.Include(x => x.User).Where(x => x.ArticleId == id).Select(CommentMapper.MapToPL).ToList();
+            return _context.Comments.Include(x => x.User).Where(x => x.ArticleId == id).Select(_mapper.Map<CommentPL>).ToList();
         }
     }
 }

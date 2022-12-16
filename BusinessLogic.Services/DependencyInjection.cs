@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Services.Implementations.Services;
+﻿using AutoMapper;
+using BusinessLogic.Services.Implementations.Services;
 using BusinessLogic.Services.Interfaces.Services;
 using Microsoft.Extensions.DependencyInjection;
 

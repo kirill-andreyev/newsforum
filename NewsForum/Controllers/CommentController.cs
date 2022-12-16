@@ -41,9 +41,9 @@ namespace NewsForum.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateComment(int ArticleId, string Title, int UserId)
+        public async Task<IActionResult> UpdateComment(int ArticleId, string Title, int UserId, int CommentId)
         {
-            var comment = new CommentPL { ArticleId = ArticleId, Text = Title, UserId = UserId};
+            var comment = new CommentPL { ArticleId = ArticleId, Text = Title, UserId = UserId, ID = CommentId};
             return Ok(await _commentService.UpdateComment(comment));
         }
 

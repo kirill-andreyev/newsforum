@@ -1,5 +1,7 @@
 using System.Text;
+using BusinessLogic.Mapping.MappingProfiles;
 using BusinessLogic.Services;
+using Constants;
 using DataAccess.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Azure;
@@ -13,6 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddAutoMapper(typeof(ArticleProfile), typeof(CommentProfile));
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
@@ -63,6 +66,8 @@ builder.Services.AddAzureClients(clientBuilder =>
     clientBuilder.AddBlobServiceClient(builder.Configuration["BlobStorageConnection:blob"], preferMsi: true);
     clientBuilder.AddQueueServiceClient(builder.Configuration["BlobStorageConnection:queue"], preferMsi: true);
 });
+
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.Jwt));
 
 var app = builder.Build();
 

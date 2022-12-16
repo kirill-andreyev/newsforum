@@ -24,9 +24,7 @@ namespace NewsForum.Controllers
 
             await _userService.CreateAccount(User);
 
-
             return Ok();
-
         }
 
         [HttpPost]
@@ -34,7 +32,7 @@ namespace NewsForum.Controllers
         {
             var loginResult = await _userService.SingIn(user);
             return Ok(Results.Json(new
-            { access_token = loginResult.Token, username = loginResult.Name, role = loginResult.Role, id = loginResult.Id }));
+            { access_token = loginResult.Token, username = loginResult.Name, id = loginResult.Id }));
         }
     }
 }
