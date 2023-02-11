@@ -34,7 +34,8 @@ namespace NewsForum.Controllers
             return Ok(await _articleService.GetArticle(id));
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = Roles.adminRole)]
+        [Authorize(Roles = Roles.moderatorRole)]
         [HttpPost]
         public async Task<IActionResult> CreateArticle(string Title, string Description, IFormFile file)
         {
@@ -43,7 +44,8 @@ namespace NewsForum.Controllers
             return Ok(await _articleService.CreateArticle(article, file));
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = Roles.adminRole)]
+        [Authorize(Roles = Roles.moderatorRole)]
         [HttpPut]
         public async Task<IActionResult> UpdateArticle(int id, string Title, string Description, IFormFile file)
         {
@@ -52,7 +54,8 @@ namespace NewsForum.Controllers
             return Ok(await _articleService.UpdateArticle(article, file));
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = Roles.adminRole)]
+        [Authorize(Roles = Roles.moderatorRole)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteArticle(int id)
         {
